@@ -60,15 +60,15 @@ To fully test this app (like for example to transfer funds) you will need to loa
 
 #### Create Wallet
 
-<img alt="create portal wallet" src="demos/create.png" height="300px" />
+<img alt="create portal wallet" src="demos/create.png" height="600px" />
 
 #### View Wallet
 
-<img alt="recover portal wallet" src="demos/wallet.png" height="300px" />
+<img alt="recover portal wallet" src="demos/wallet.png" height="600px" />
 
 #### Back Up Wallet
 
-<img alt="back up portal wallet" src="demos/backup.png" height="300px" />
+<img alt="back up portal wallet" src="demos/backup.png" height="600px" />
 
 ## Portal Documentation
 
