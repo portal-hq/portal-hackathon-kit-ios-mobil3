@@ -14,50 +14,103 @@ struct PortalSendTokenFormView: View {
     var onSendPress: (() -> Void)?
 
     var body: some View {
-        VStack {
-            LeadingText("Transfer Tokens")
-                .font(.title)
-                .bold()
-                .padding(.bottom, 10)
+        VStack(spacing: 12) {
+            HStack {
+                Text("Send Tokens")
+                    .foregroundColor(Constants.Theme.textColor)
+                    .font(.headline)
+                    .fontWeight(.bold)
+                    .textCase(.uppercase)
+                    .kerning(1)
+                    .padding(.top, 24)
+                Spacer()
+            }
 
-            VStack {
-                LeadingText("RECIPIENT")
-                    .font(.subheadline)
-
-                TextField("Recipient Address", text: $recipientAddress)
-                    .frame(height: 40)
-                    .overlay(RoundedRectangle(cornerRadius: 8).stroke(.gray, lineWidth: 1))
-                    .padding(.bottom)
-
-                LeadingText("AMOUNT")
-                    .font(.subheadline)
-
-                TextField("Amount", text: $amount)
-                    .keyboardType(.numberPad)
-                    .frame(height: 40)
-                    .overlay(RoundedRectangle(cornerRadius: 8).stroke(.gray, lineWidth: 1))
-
+            VStack(spacing: 12) {
                 HStack {
-                    Text("Select Token:")
-                        .font(.headline)
-                        .bold()
-
+                    Text("Token:")
+                        .foregroundColor(Constants.Theme.textColor)
+                        .font(.caption)
+                        .fontWeight(.bold)
+                        .textCase(.uppercase)
+                        .kerning(1)
                     Spacer()
+                }
 
-                    Picker("", selection: self.$tokenSymbol) {
-                        Text("MON").tag("MON")
-                        Text("USDC").tag("USDC")
+                HStack(spacing: 10) {
+                    // MON Toggle
+                    Button {
+                        tokenSymbol = "MON"
+                    } label: {
+                        Text("MON")
+                            .font(.headline)
+                            .fontWeight(.bold)
+                            .foregroundColor(Constants.Theme.textColor)
+                            .frame(maxWidth: .infinity, minHeight: 50)
+                            .background(tokenSymbol == "MON" ? Constants.Theme.primaryBlue : Constants.Theme.secondaryBackground)
+                            .cornerRadius(5)
+                    }
+
+                    // USDC Toggle
+                    Button {
+                        tokenSymbol = "USDC"
+                    } label: {
+                        Text("USDC")
+                            .font(.headline)
+                            .fontWeight(.bold)
+                            .foregroundColor(Constants.Theme.textColor)
+                            .frame(maxWidth: .infinity, minHeight: 50)
+                            .background(tokenSymbol == "USDC" ? Constants.Theme.primaryBlue : Constants.Theme.secondaryBackground)
+                            .cornerRadius(5)
                     }
                 }
-                .pickerStyle(DefaultPickerStyle())
-
-                PortalButton(title: "Send \(tokenSymbol)") {
-                    onSendPress?()
-                }
-                .frame(height: 45)
-                .padding(.top)
             }
-            .padding([.leading, .trailing], 20)
+
+            // Recipient Address Section
+            VStack(spacing: 12) {
+                HStack {
+                    Text("To:")
+                        .foregroundColor(Constants.Theme.textColor)
+                        .font(.caption)
+                        .fontWeight(.bold)
+                        .textCase(.uppercase)
+                        .kerning(1)
+                    Spacer()
+                }
+
+                TextField("Wallet address", text: $recipientAddress)
+                    .foregroundColor(Constants.Theme.textColor)
+                    .padding()
+                    .background(Constants.Theme.secondaryBackground)
+                    .cornerRadius(5)
+                    .frame(height: 50)
+            }
+
+            // Amount Section
+            VStack(spacing: 12) {
+                HStack {
+                    Text("Amount:")
+                        .foregroundColor(Constants.Theme.textColor)
+                        .font(.caption)
+                        .fontWeight(.bold)
+                        .textCase(.uppercase)
+                        .kerning(1)
+                    Spacer()
+                }
+
+                TextField("0.0", text: $amount)
+                    .foregroundColor(Constants.Theme.textColor)
+                    .keyboardType(.numberPad)
+                    .padding()
+                    .background(Constants.Theme.secondaryBackground)
+                    .cornerRadius(5)
+                    .frame(height: 50)
+            }
+
+            PortalButton(title: "Send \(tokenSymbol)") {
+                onSendPress?()
+            }
+            .frame(height: 50)
         }
     }
 }

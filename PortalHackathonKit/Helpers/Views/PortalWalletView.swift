@@ -19,92 +19,133 @@ struct PortalWalletView: View {
     @State private var showPasswordAlert = false
     @State private var backupPassword: String = ""
 
+    // Helper function to truncate address
+    private func truncateAddress(_ address: String) -> String {
+        guard address.count > 10 else { return address }
+        let prefix = String(address.prefix(22))
+        let suffix = String(address.suffix(4))
+        return "\(prefix)...\(suffix)"
+    }
+
+    // Helper function to format balance (show 0 instead of nil or -)
+    private func formatBalance(_ balance: String?) -> String {
+        guard let balance = balance, !balance.isEmpty, balance != "-" else {
+            return "0"
+        }
+        return balance
+    }
+
     var body: some View {
-        VStack {
-            HStack(alignment: .center) {
-                Text("Wallet")
+        VStack(spacing: 12) {
+            HStack {
+                Text("Portal Wallet")
                     .font(.title)
-                    .bold()
-
+                    .fontWeight(.bold)
+                    .foregroundColor(Constants.Theme.textColor)
                 Spacer()
-
-                PortalButton(title: "Fund Wallet", style: .secondary) {
-                    onFundClick?()
-                }
-                .frame(width: 100, height: 30)
-
-                PortalButton(title: "Backup Wallet", style: .secondary) {
-                    showPasswordAlert.toggle()
-                }
-                .frame(height: 30)
             }
-            .padding(.bottom, 10)
 
-            VStack {
+            VStack(spacing: 12) {
                 HStack {
-                    Text("ADDRESS:")
+                    Text("Address:")
+                        .foregroundColor(Constants.Theme.textColor)
                         .font(.headline)
-                        .bold()
+                        .fontWeight(.bold)
+                        .textCase(.uppercase)
+                        .kerning(1)
+                    Spacer()
+                }
+
+                HStack(spacing: 8) {
+                    Text(truncateAddress(address))
+                        .foregroundColor(Constants.Theme.textColor)
+                        .font(.callout)
+                        .padding(.vertical, 12)
+                        .padding(.horizontal, 16)
+                        .background(Constants.Theme.secondaryBackground)
+                        .cornerRadius(8)
+                        .frame(maxWidth: .infinity, alignment: .leading)
 
                     Button {
                         onCopyAddressClick?()
                     } label: {
                         Image(systemName: "doc.on.doc")
+                            .foregroundColor(Constants.Theme.primaryBlue)
+                            .font(.title3)
                     }
+                }
+            }
+
+            // Fund and Backup buttons underneath address
+            HStack(spacing: 12) {
+                PortalButton(title: "Fund", style: .secondary) {
+                    onFundClick?()
+                }
+                .frame(height: 44)
+
+                PortalButton(title: "Backup", style: .secondary) {
+                    showPasswordAlert.toggle()
+                }
+                .frame(height: 44)
+            }
+
+            VStack(spacing: 12) {
+                HStack {
+                    Text("Balances:")
+                        .foregroundColor(Constants.Theme.textColor)
+                        .font(.headline)
+                        .fontWeight(.bold)
+                        .textCase(.uppercase)
+                        .kerning(1)
+                        .padding(.top, 12)
                     Spacer()
                 }
 
-                LeadingText(address)
-                    .font(.body)
-                    .padding(.bottom, 10)
-
-                if let nativeBalance {
+                VStack(spacing: 6) {
                     HStack {
-                        Text("Native BALANCE:")
-                            .font(.headline)
-                            .bold()
-
-                        Button {
-                            onRefreshBalanceClick?()
-                        } label: {
-                            Image(systemName: "arrow.clockwise")
-                        }
+                        Text("MON")
+                            .foregroundColor(Constants.Theme.textColor)
+                            .font(.caption)
+                            .fontWeight(.bold)
+                            .textCase(.uppercase)
                         Spacer()
+                        Text(formatBalance(nativeBalance) + " MON")
+                            .foregroundColor(Constants.Theme.textColor)
+                            .font(.title3)
+                            .fontWeight(.semibold)
                     }
+                    .padding()
+                    .cornerRadius(8)
 
-                    LeadingText("\(nativeBalance) MON")
-                        .font(.body)
-                        .padding(.bottom, 10)
+                    // USDC Balance - Full Width
+                    HStack {
+                        Text("USDC")
+                            .foregroundColor(Constants.Theme.textColor)
+                            .font(.caption)
+                            .fontWeight(.bold)
+                            .textCase(.uppercase)
+                        Spacer()
+                        Text(formatBalance(USDCBalance) + " USDC")
+                            .foregroundColor(Constants.Theme.textColor)
+                            .font(.title3)
+                            .fontWeight(.semibold)
+                    }
+                    .padding()
+                    .cornerRadius(8)
                 }
 
-                if let USDCBalance {
-                    HStack {
-                        Text("USDC BALANCE:")
-                            .font(.headline)
-                            .bold()
-
-                        Button {
-                            onRefreshBalanceClick?()
-                        } label: {
-                            Image(systemName: "arrow.clockwise")
-                        }
-                        Spacer()
-                    }
-
-                    LeadingText("\(USDCBalance) USDC")
-                        .font(.body)
-                        .padding(.bottom, 10)
+                PortalButton(title: "Refresh Balances", style: .secondary) {
+                    onRefreshBalanceClick?()
                 }
-
+                .frame(height: 50)
             }
-            .padding([.leading, .trailing], 20)
         }
-        .alert("Enter Password", isPresented: $showPasswordAlert) {
-            SecureField("PASSWORD", text: $backupPassword)
+        .alert("Backup Wallet", isPresented: $showPasswordAlert) {
+            SecureField("Password", text: $backupPassword)
                 .keyboardType(.numberPad)
                 .textContentType(.password)
 
-            Button("Submit") {
+            Button("Backup") {
                 onBackupWalletClick?(backupPassword)
             }
             Button("Cancel", role: .cancel, action: {})
@@ -113,5 +154,5 @@ struct PortalWalletView: View {
 }
 
 #Preview {
-    PortalWalletView(address: "the address should be here...", nativeBalance: "5", USDCBalance: "100")
+    PortalWalletView(address: "0x35ff2c11b5f6024cdd95e890867e851489ae032a", nativeBalance: "5.0", USDCBalance: "100.0")
 }

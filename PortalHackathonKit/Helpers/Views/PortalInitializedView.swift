@@ -15,33 +15,39 @@ struct PortalInitializedView: View {
     @State private var recoverPassword: String = ""
 
     var body: some View {
-        VStack {
+        VStack(spacing: 20) {
             if isRecoverAvailable {
-                Text("Wallet is available on the device. Recover it to continue!")
+                Text("Wallet found. Ready to recover?")
+                    .foregroundColor(Constants.Theme.textColor)
                     .multilineTextAlignment(.center)
+                    .font(.title2)
+                    .fontWeight(.bold)
             } else {
-                Text("No wallet is available on the device. Let's create one!")
+                Text("Ready to create your wallet?")
+                    .foregroundColor(Constants.Theme.textColor)
                     .multilineTextAlignment(.center)
+                    .font(.title2)
+                    .fontWeight(.bold)
             }
 
-            PortalButton(title: "Generate") {
+            PortalButton(title: "Create Wallet") {
                 onGenerateWalletClicked?()
             }
-            .frame(width: 200, height: 45)
+            .frame(width: 250, height: 50)
 
             if isRecoverAvailable {
-                PortalButton(title: "Recover Wallet", style: .secondary) {
+                PortalButton(title: "Recover", style: .secondary) {
                     showPasswordAlert.toggle()
                 }
-                .frame(width: 200, height: 45)
+                .frame(width: 250, height: 50)
             }
         }
-        .alert("Enter Password", isPresented: $showPasswordAlert) {
-            SecureField("PASSWORD", text: $recoverPassword)
+        .alert("Recover Wallet", isPresented: $showPasswordAlert) {
+            SecureField("Password", text: $recoverPassword)
                 .keyboardType(.numberPad)
                 .textContentType(.password)
 
-            Button("Submit") {
+            Button("Recover") {
                 onRecoverWalletClicked?(recoverPassword)
             }
             Button("Cancel", role: .cancel, action: {})

@@ -12,27 +12,33 @@ struct PortalTransactionHashView: View {
     var onCopyTransactionHashClick: (() -> Void)?
 
     var body: some View {
-        VStack {
+        VStack(spacing: 15) {
             HStack {
-                Text("RECENT TRANSACTION HASH:")
-                    .font(.headline)
-                    .bold()
+                LeadingText("Transaction:", isLabel: true)
 
                 Button {
                     onCopyTransactionHashClick?()
                 } label: {
                     Image(systemName: "doc.on.doc")
+                        .foregroundColor(Constants.Theme.primaryBlue)
                 }
                 Spacer()
             }
-            LeadingText(transactionHash)
-                .font(.body)
+
+            HStack {
+                Text(transactionHash)
+                    .foregroundColor(Constants.Theme.textColor)
+                    .font(.body)
+                    .padding()
+                    .background(Constants.Theme.secondaryBackground)
+                    .cornerRadius(5)
+                Spacer()
+            }
         }
-        .padding([.leading, .trailing], 20)
 
     }
 }
 
 #Preview {
-    PortalTransactionHashView(transactionHash: "Transaction hash...")
+    PortalTransactionHashView(transactionHash: "0xabcd...1234")
 }

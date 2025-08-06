@@ -59,13 +59,13 @@ To fully test this app (like for example to transfer funds) you will need to loa
 ## Demos
 
 #### Generate Wallet Demo
-![Generate Wallet](demos/generate-wallet.gif)
+![Create Portal Wallet](demos/create.png)
 
-#### Backup Wallet
-![Generate Wallet](demos/backup-wallet.gif)
+#### Back Up Wallet
+![Back up wallet](demos/backup.png)
 
 #### Recover Wallet
-![Generate Wallet](demos/recover-wallet.gif)
+![Recover Wallet](demos/recover.png)
 
 ## Portal Documentation
 

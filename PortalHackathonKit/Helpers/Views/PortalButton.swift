@@ -15,7 +15,7 @@ struct PortalButton: View {
     var title: String?
     var style: ButtonStyle = .primary
     var onPress: (() -> Void)?
-    var cornerRadius: CGFloat = 12
+    var cornerRadius: CGFloat = 5 // Reduced to match React Native version (5px)
 
     var body: some View {
         GeometryReader { geometry in
@@ -28,34 +28,30 @@ struct PortalButton: View {
             onPress?()
         } label: {
             Text(title ?? "")
-                .frame(width: geometry.size.width, height: geometry.size.height, alignment: .center)
-                .background(getBackgroundColor(for: style))
-                .foregroundColor(getForegroundColor(for: style))
                 .font(.headline)
+                .fontWeight(.bold)
+                .foregroundColor(getForegroundColor(for: style))
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
-        .frame(width: geometry.size.width, height: geometry.size.height, alignment: .center)
+        .frame(width: geometry.size.width, height: geometry.size.height)
         .background(getBackgroundColor(for: style))
-        .foregroundColor(getForegroundColor(for: style))
-        .font(.headline)
         .cornerRadius(cornerRadius)
         .clipped()
     }
 
-    func getBackgroundColor(for style: ButtonStyle) -> Color? {
+    func getBackgroundColor(for style: ButtonStyle) -> Color {
         switch(style){
         case .primary:
-            return .black
+            return Constants.Theme.primaryBlue // #007BFF Blue accent
         case .secondary:
-            return .gray
+            return Constants.Theme.secondaryBackground // #333 Dark gray
         }
     }
 
-    func getForegroundColor(for style: ButtonStyle) -> Color? {
+    func getForegroundColor(for style: ButtonStyle) -> Color {
         switch(style){
-        case .primary:
-            return .white
-        case .secondary:
-            return .black
+        case .primary, .secondary:
+            return Constants.Theme.textColor // #FFF White text for both
         }
     }
 }

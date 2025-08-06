@@ -23,7 +23,7 @@ struct PortalHackathonKit: View {
                     // Loader
                     ProgressView()
                         .scaleEffect(2)
-                        .tint(.blue)
+                        .tint(Constants.Theme.primaryBlue)
 
                 case let .portalInitialized(isRecoverAvailable):
                     // Generate or Recover Wallet View
@@ -70,12 +70,15 @@ struct PortalHackathonKit: View {
                 case .error(let errorMessage):
                     // Label to show the error
                     Text(errorMessage)
-                        .foregroundStyle(.red)
+                        .foregroundColor(.red)
+                        .multilineTextAlignment(.center)
                 }
             }
             .frame(minHeight: UIScreen.main.bounds.height - 32)
-            .padding()
+            .padding(20)
         }
+        .background(Constants.Theme.backgroundColor)
+        .preferredColorScheme(.dark)
     }
 }
 
