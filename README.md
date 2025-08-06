@@ -61,12 +61,6 @@ To fully test this app (like for example to transfer funds) you will need to loa
 #### Generate Wallet Demo
 ![Generate Wallet](demos/generate-wallet.gif)
 
-#### Transfer Token Demo
-![Generate Wallet](demos/send-token.gif)
-
-#### Reload Recipient Balance Demo
-![Generate Wallet](demos/reload-recepient-balance.gif)
-
 #### Backup Wallet
 ![Generate Wallet](demos/backup-wallet.gif)
 
